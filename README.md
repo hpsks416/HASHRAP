@@ -18,6 +18,10 @@
 3. Eval：`python eval\run_eval.py --self-test`
 4. MCP：`python mcp\mcp_server.py`
 
+## 相关仓库
+
+- [framework-kb](https://github.com/hpsks416/framework-kb) — DSH 框架内容的知识库（FTS5 + 向量 + RRF 检索 + 接地契约 + MCP），用本项目的 RAG 方法建成
+
 ## License
 
 MIT
