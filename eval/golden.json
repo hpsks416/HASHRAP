@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "note": "起步黄金集（starter）。术语基于 STM32H743 / RM0433 公开寄存器名，用于先跑出检索基线。必须用你实际解析后的手册文本核对这些术语的真实呈现（OCR/解析后寄存器名可能带下标或空格，如 fADC 可能渲染为 f ADC）。expected_page 先留 null，待你对照原手册核实页码后再填，本脚本即可自动校验页码级引用。",
+    "manual": "RM0433 Rev 9 (STM32H743)",
+    "category_hint": "类别用于分域报告，避免只看总平均——不同类别召回难度差异大，总平均最无指导意义。"
+  },
+  "cases": [
+    {
+      "id": "adc-clock-source",
+      "category": "register_config",
+      "query": "STM32H743 的 ADC 时钟源和预分频如何配置？",
+      "english_query": "ADC clock source selection and prescaler configuration",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": ["CKMODE", "ADCCLK"], "must_not_contain": [], "expected_section": "ADC", "expected_page": null}
+    },
+    {
+      "id": "aden-bit",
+      "category": "register_config",
+      "query": "STM32H743 ADC 控制寄存器 ADEN 位如何使用，使能后需要等什么？",
+      "english_query": "ADEN bit usage and ADRDY wait after enabling the ADC",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": ["ADEN", "ADRDY"], "must_not_contain": [], "expected_section": "ADC", "expected_page": null}
+    },
+    {
+      "id": "spi-init",
+      "category": "register_config",
+      "query": "STM32H743 SPI 初始化需要配置哪些关键参数？",
+      "english_query": "SPI initialization baud rate prescaler clock polarity and phase",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": ["CPOL", "CPHA"], "must_not_contain": [], "expected_section": "SPI", "expected_page": null}
+    },
+    {
+      "id": "adc-max-freq-rev",
+      "category": "version_diff",
+      "query": "STM32H743 ADC 最大时钟频率与硅版本、BOOST 设置有怎样的约束？",
+      "english_query": "ADC maximum clock frequency silicon revision and BOOST setting",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": ["BOOST"], "must_not_contain": [], "expected_section": "ADC", "expected_page": null}
+    },
+    {
+      "id": "rcc-d1ccipr",
+      "category": "register_config",
+      "query": "STM32H743 RCC 的 D1CCIPR 寄存器如何选择外设时钟？",
+      "english_query": "RCC D1CCIPR register peripheral clock source selection",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": ["D1CCIPR"], "must_not_contain": [], "expected_section": "RCC", "expected_page": null}
+    },
+    {
+      "id": "i2c-timing",
+      "category": "timing",
+      "query": "STM32H743 I2C 时序寄存器 TIMINGR 如何设置？",
+      "english_query": "I2C timing register TIMINGR configuration",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": ["TIMINGR"], "must_not_contain": [], "expected_section": "I2C", "expected_page": null}
+    },
+    {
+      "id": "gpio-pa0-mux",
+      "category": "pin_mux",
+      "query": "STM32H743 的 PA0 引脚有哪些复用功能？",
+      "english_query": "PA0 pin alternate functions",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": ["PA0"], "must_not_contain": [], "expected_section": null, "expected_page": null}
+    },
+    {
+      "id": "vdda-supply",
+      "category": "param_table",
+      "query": "STM32H743 的 VDDA 供电电压范围是多少？",
+      "english_query": "VDDA supply voltage range",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": ["VDDA"], "must_not_contain": [], "expected_section": null, "expected_page": null}
+    },
+    {
+      "id": "wrong-family-precision",
+      "category": "precision",
+      "query": "STM32H743 ADC 时钟配置",
+      "english_query": "ADC clock configuration",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": ["ADC"], "must_not_contain": ["STM32F1", "STM32F4"], "expected_section": "ADC", "expected_page": null}
+    },
+    {
+      "id": "fabricated-register",
+      "category": "honest_gap",
+      "query": "STM32H743 的 XYZ123 寄存器位定义",
+      "english_query": "XYZ123 register bit definition",
+      "chip": "STM32H743",
+      "revision": "9",
+      "checks": {"must_contain": [], "must_not_contain": ["XYZ123"], "expected_section": null, "expected_page": null}
+    }
+  ]
+}

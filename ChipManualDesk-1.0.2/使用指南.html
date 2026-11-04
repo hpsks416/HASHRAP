@@ -1,0 +1,71 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>ChipManualDesk 使用指南</title><style>body{max-width:900px;margin:48px auto;padding:0 24px;font:16px/1.8 system-ui;color:#18304f;background:#f5f8fc}h1,h2{color:#17478e}pre{background:#e5edf7;padding:16px;overflow:auto}table{border-collapse:collapse}td,th{border:1px solid #bdcde0;padding:8px}a{color:#2458be}</style><h1>ChipManualDesk 一键配置与使用指南</h1>
+<p>这是本机运行的芯片手册工具：选择 PDF，按批解析，建立检索索引，再让 Codex 或 Claude Code 根据证据回答。首次安装需要联网下载运行环境与模型；正常解析和检索使用本地模型，不需要 MinerU 或 OpenAI API Key。</p>
+<p>AI 软件在生成答案时会收到检索到的片段，使用该 AI 软件自身的账号和额度。</p>
+<h2>1. 第一次安装</h2>
+<ol>
+<li>将发行 ZIP 完整解压，保留 <code>backend</code>、<code>tools</code> 和所有脚本，不能只复制 EXE。</li>
+<li>双击 <code>Install.cmd</code>。它会安装独立 Python 3.12、依赖、MinerU 模型和检索模型，并配置检测到的 Codex / Claude Code。</li>
+<li>安装成功后，双击 <code>ChipManualDesk.exe</code> 或 <code>Start.cmd</code>。</li>
+<li>在 AI 软件里打开新聊天，使用芯片手册 Skill。</li>
+</ol>
+<p>默认应用位置：<code>%LOCALAPPDATA%\ChipManualDesk</code>。默认知识库位置：Windows“文档”下的 <code>ChipManualLibrary</code>。安装不修改系统 Python，不需要管理员权限。首次安装需要数 GB 下载和磁盘空间，建议预留至少 15 GB，再额外预留手册及解析结果的空间。</p>
+<p>也可以直接运行 EXE，在“环境与存储”中选择安装位置和知识库位置，然后点击“一键安装 / 修复”。修改已使用知识库的位置时，先复制完整知识库目录，再安装指向新目录；程序不自动删除原目录。</p>
+<p>高级安装命令：</p>
+<pre><code class="language-powershell">powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1 -InstallRoot 'C:\Tools\ChipManualDesk' -LibraryRoot 'E:\ChipManualLibrary'
+</code></pre>
+<h2>2. 解析 PDF 并生成向量</h2>
+<ol>
+<li>打开“解析并入库”，选择 PDF。</li>
+<li>填写制造商、芯片/系列、手册标题和修订版；版本确实未知时填写 <code>unknown</code>。</li>
+<li>共用手册可填写多个适用型号，用逗号分隔。只能登记手册明确支持的型号。</li>
+<li>默认选 <code>standard</code>，点击“开始解析并入库”。程序自动分批解析、保留页码与图片、生成关键词索引和向量，并分类归档。</li>
+<li>状态变为“可查询”后即可使用。</li>
+</ol>
+<p><code>advanced</code> 计算量更大；<code>basic</code> 适用于不使用视觉语言模型的基础解析。几千页手册可能需要数小时，实际耗时取决于页面内容和硬件。</p>
+<p>“安全暂停”会在当前解析批次完成后停止；向量阶段保存检查点。再次启动软件，在“手册与检索”选中该任务，点击“恢复选中任务”。强制关机可能需要重做正在进行的批次或少量未提交的向量。</p>
+<p>已有完整 MinerU 结果时，在“复用已有解析结果”选择含 <code>middle_json.json</code> 和图片的目录，同时选择与之匹配的原 PDF。程序校验完整页码覆盖，再直接建索引，不重新解析。</p>
+<h2>3. 向量与手册存在哪里</h2>
+<pre><code class="language-text">ChipManualLibrary/
+  manuals/文档ID/       原 PDF、解析内容、图片、任务清单
+  collections/制造商/芯片/手册--ID/
+    index.sqlite3      这份手册独立的内容和向量索引
+    manual.json        分类、版本、来源与位置
+  index.sqlite3        统一检索索引
+  models/              本地解析与检索模型
+  backups/skills/      更新前的 AI 技能备份
+  installation-report.json
+</code></pre>
+<p>每份手册的向量按制造商、芯片和手册分类保存；统一索引用于跨手册搜索。分类索引与原文件共同组成知识库，备份时建议复制整个 <code>ChipManualLibrary</code>。向量与对应模型成套使用，更换向量模型后需要重新建索引。</p>
+<p>安装器能从本工具之前安装的 Skill 找到旧知识库，复制复用已有手册、模型和向量，并更新本地路径。原数据保留。也可以显式指定：</p>
+<pre><code class="language-powershell">.\Install.ps1 -SeedLibrary 'C:\旧项目\data'
+</code></pre>
+<p>如果目标目录已有索引，安装器会保留目标库，不覆盖合并。需要合并的手册可以从原 PDF 或已有解析结果重新导入。</p>
+<h2>4. 一键配置 AI 软件</h2>
+<p>打开“AI 软件配置”，先“检测本机 AI 软件”，再“一键配置已检测软件”。也可双击 <code>Configure-AI.cmd</code>。</p>
+<p>| 软件 | 当前支持方式 |
+|---|---|
+| Codex | 自动安装个人 Skill；优先使用已存在的个人技能目录，新环境采用 <code>.agents/skills</code> |
+| Claude Code | 自动安装到 <code>.claude/skills/chip-manual-rag</code> |
+| Claude 普通桌面聊天 / 网页 | 不自动宣称可连接本地库；仅上传 Skill 不保证有本机脚本执行能力 |
+| Cursor / Windsurf | 可检测常见安装迹象，当前不自动改写配置 |</p>
+<p>检测读取 PATH 和常见应用/配置目录，不读取 API Key、登录令牌或聊天记录。便携安装和非标准目录可能需要手动处理。配置只新增或更新本工具的 Skill，原技能目录会先备份；不会改动其他技能、账号、权限策略或模型设置。</p>
+<p>配置后打开新聊天，Codex 可以说：</p>
+<blockquote>
+<p>使用 $chip-manual-rag 查询 RM0433 Rev 9：STM32H743 的 ADC 时钟源和预分频如何配置？请附原始页码。</p>
+</blockquote>
+<p>Claude Code 可使用 <code>/chip-manual-rag</code>，或直接要求查询本地芯片手册。宿主软件可能要求授权读取本地目录或执行检索脚本，按本机权限设置操作。</p>
+<h2>5. 常见问题</h2>
+<p><strong>提示 PDF 已加密怎么办？</strong> 1.0.2 起，无需打开密码、仅带权限限制的 PDF 可以直接导入。如果文件确实需要打开密码，请先在 PDF 阅读器中使用正确密码打开，再另存为无需密码的副本后导入。程序不会尝试猜测密码。</p>
+<p><strong>EXE 和安装脚本是什么关系？</strong> EXE 是桌面界面，安装脚本负责准备独立运行环境和大体积模型；不是把几 GB 模型塞进一个 EXE。完成安装后，界面会调用本地运行环境完成解析与向量化。</p>
+<p><strong>网页报等待超时怎么办？</strong> 本桌面软件直接调用本地解析程序，按批保存。旧 MinerU 网页任务超时不等于后台失败，保留任务编号并用已有工具取回已完成结果，避免重复运行整本手册。</p>
+<p><strong>如何彻底离线？</strong> 在联网机器完成安装、模型验证后，保留完整应用运行环境及知识库，再使用本机解析和检索；AI 生成答案是否联网取决于你使用的宿主 AI 软件。</p>
+<p><strong>如何卸载？</strong> 先关闭程序，备份知识库。应用运行环境与知识库是两个独立目录；删除应用不应同时删除知识库。移除 AI 集成时只删除本工具对应的 <code>chip-manual-rag</code> Skill，原版可从 <code>backups/skills</code> 恢复。</p>
+<p>EXE 为本地构建、未做商业代码签名；Windows 可能显示未知发布者。源码、安装脚本和依赖版本随包提供，便于核对。</p>
+<p>安装失败可再次运行同一脚本，已经下载的依赖和模型会复用。工作界面的日志会显示具体失败阶段。</p>
+<h2>参考</h2>
+<ul>
+<li><a href="https://learn.chatgpt.com/docs/build-skills">OpenAI 官方 Skill 文档</a></li>
+<li><a href="https://code.claude.com/docs/en/skills">Claude Code 官方 Skill 文档</a></li>
+<li><a href="https://opendatalab.github.io/MinerU/usage/sdk_api/">MinerU 本地 SDK</a></li>
+</ul>
+</html>

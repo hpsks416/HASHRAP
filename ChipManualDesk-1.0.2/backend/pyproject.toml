@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chip-manual-rag"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["mineru==4.0.12", "fastembed==0.9.1", "pypdf==6.21.3", "numpy>=2,<3", "beautifulsoup4>=4.13,<5", "filelock>=3"]
+
+[project.optional-dependencies]
+# bge-m3 / bge-reranker-v2-m3 are NOT supported by FastEmbed; they need sentence-transformers.
+# Usage: pip install ".[bge]"; then set embedding_backend/reranker_backend to "sentence-transformers"
+# and embedding_model/reranker_model to the BAAI models, then rebuild the index.
+bge = ["sentence-transformers>=3"]
+# Local figure captioning (config "image_captioning": true) needs transformers + torch.
+vision = ["transformers>=4.45", "torch", "accelerate"]
+
+[project.scripts]
+chiprag = "chiprag.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["chiprag*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

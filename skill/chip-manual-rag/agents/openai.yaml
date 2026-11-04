@@ -1,0 +1,4 @@
+interface:
+  display_name: "芯片手册查询"
+  short_description: "检索本机按芯片手册归档的知识库，读取寄存器与参数并附原页出处"
+  default_prompt: "使用 $chip-manual-rag 查询芯片手册，并提供修订版和原始页码。"

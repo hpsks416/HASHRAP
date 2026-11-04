@@ -1,0 +1,12 @@
+# ChipManualDesk 芯片手册知识库（检索）
+
+本机芯片手册 RAG 工具：PDF 解析入库后，用混合检索（FTS5 + 向量 + RRF）按芯片/修订版查寄存器、时序、引脚与电气参数，并附原页出处。可被 agent 通过 MCP 全权驱动检索。
+
+## For AI agents
+
+1. 启动 MCP：`python mcp\mcp_server.py`（http://127.0.0.1:8000/mcp）。
+2. 连接：`claude mcp add --transport http chip-manual-rag http://127.0.0.1:8000/mcp`
+3. 先读说明书（MCP resource `tool://skill`），再调用 status/search/read/page。
+4. 最小任务：`status` 看手册清单，再 `search "ADC clock source" chip=STM32H743 revision=9`。
+
+> 入库走 ChipManualDesk 桌面端；本 MCP 只读检索。需本机已 `Install.cmd` 完成并索引手册。

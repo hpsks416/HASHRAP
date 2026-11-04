@@ -1,0 +1,20 @@
+{
+  "tier": "standard",
+  "batch_pages": 50,
+  "overlap_pages": 1,
+  "parse_timeout_seconds": 7200,
+  "ui_wait_timeout_seconds": 28800,
+  "ui_poll_interval_seconds": 2,
+  "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "embedding_backend": "fastembed",
+  "reranker_model": "Xenova/ms-marco-MiniLM-L-6-v2",
+  "reranker_backend": "fastembed",
+  "embedding_batch_size": 16,
+  "threads": 4,
+  "chunk_characters": 1400,
+  "retrieval_candidates": 30,
+  "cross_page_table_cell_merge": false,
+  "image_captioning": false,
+  "image_caption_model": "Qwen/Qwen2.5-VL-2B-Instruct",
+  "image_caption_batch_size": 4
+}

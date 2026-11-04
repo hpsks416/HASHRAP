@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+runtime/
+
+# 大二进制（1.0.2 原始发行物，不入库；见原始 ChipManualDesk-1.0.2.zip）
+ChipManualDesk-1.0.2/ChipManualDesk.exe
+ChipManualDesk-1.0.2/tools/uv.exe
+
+# 本地数据/模型（运行时生成，不入库）
+ChipManualDesk-1.0.2/backend/data/
+
+# 机密
+secrets.cmd
+*.env
+.env
+
+# 打包产物
+*.zip
