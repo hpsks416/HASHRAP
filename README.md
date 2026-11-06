@@ -32,3 +32,6 @@ python search_kb.py "判重读版本差异" --lexical-only --no-rerank
 ## License
 
 MIT
+
+---
+> ⚠️ **本仓库已归档（历史参考）**。后续更新请到 [agent-deployed](https://github.com/hpsks416/agent-deployed)。

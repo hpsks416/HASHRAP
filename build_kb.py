@@ -72,6 +72,9 @@ def collect_sources():
         (home / ".dsh" / "persona.md", "画像"),
         (home / ".dsh" / "meta-drift-log.md", "偏离日志"),
         (Path("G:/CodexDS/DSH/INTRO/HANDOFF.md"), "交接"),
+        (Path("G:/CodexDS/DSH/INTRO/_absorb_plan.md"), "调研"),
+        (Path("G:/CodexDS/DSH/INTRO/_gitcode_agent_crawl.md"), "调研"),
+        (Path("G:/DSH/CMAIN/SECURITY/_absorb_plan_security.md"), "安全调研"),
     ]
     for p, tag in core:
         if p.is_file():
