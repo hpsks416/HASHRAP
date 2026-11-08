@@ -85,6 +85,8 @@ def collect_sources():
                 continue
             seen.add(name)
             sources.append((sk, f"skill:{name}"))
+            for ref in sorted((sk.parent / "references").rglob("*.md")):
+                sources.append((ref, f"skill:{name}/ref"))
 
     add_skills(home / ".dsh")
     add_skills(home / ".agents")
