@@ -71,7 +71,7 @@ def collect_sources():
         (home / ".dsh" / "AGENTS.md", "铁律"),
         (home / ".dsh" / "persona.md", "画像"),
         (home / ".dsh" / "meta-drift-log.md", "偏离日志"),
-        (Path("G:/CodexDS/DSH/INTRO/HANDOFF.md"), "交接"),
+        (Path("G:/CodexDS/DSH/INTRO/agent-deploy/HANDOFF.md"), "交接"),
     ]
     for p, tag in core:
         if p.is_file():
